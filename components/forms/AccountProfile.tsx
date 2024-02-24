@@ -1,12 +1,7 @@
-"use client";
-
-import * as z from "zod";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import * as z from "zod"
 import {
   Form,
   FormControl,
@@ -24,6 +19,8 @@ import { isBase64Image } from "@/lib/utils";
 
 import { UserValidation } from "@/lib/validations/user";
 import { updateUser } from "@/lib/actions/user.actions";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 interface Props {
   user: {
@@ -40,18 +37,17 @@ interface Props {
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
 
-  
+  const [files, setFiles] = useState<File[]>([]);
 
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profile_photo: user?.image || "",
-      name:  user?.name || "",
-      username:  user?.username ||"",
-      bio:  user?.bio || "",
+      profile_photo: user?.image ? user.image : "",
+      name: user?.name ? user.name : "",
+      username: user?.username ? user.username : "",
+      bio: user?.bio ? user.bio : "",
     },
   });
 
@@ -126,6 +122,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     height={96}
                     priority
                     className='rounded-full object-contain'
+                    draggable={false}
                   />
                 ) : (
                   <Image
@@ -134,6 +131,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     width={24}
                     height={24}
                     className='object-contain'
+                    draggable={false}
                   />
                 )}
               </FormLabel>
@@ -146,7 +144,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
