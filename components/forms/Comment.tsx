@@ -1,10 +1,9 @@
 "use client";
 
-import * as z from "zod";
-
+import { z } from "zod";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { usePathname, useRouter } from "next/navigation";
-
+import { usePathname } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -13,87 +12,76 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
-import { Button } from "@/components/ui/button";
-import { Input} from "@/components/ui/input";
-
-
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 import { CommentValidation } from "@/lib/validations/post";
-import Image from "next/image";
 import { addCommentToPost } from "@/lib/actions/post.actions";
-//import { createPost } from "@/lib/actions/post.actions";
-//import { updateUser } from "@/lib/actions/user.actions";
+
 interface Props {
-    postId: string;
-    currentUserImg: string;
-    currentUserId: string;
-  }
+  postId: string;
+  currentUserImg: string;
+  currentUserId: string;
+}
 
-const Comment = ({postId, currentUserImg,currentUserId }: Props) => {
+function Comment({ postId, currentUserImg, currentUserId }: Props) {
+  const pathname = usePathname();
 
-    const router = useRouter();
-    const pathname = usePathname();
-
-
-  
-
-  const form = useForm({
+  const form = useForm<z.infer<typeof CommentValidation>>({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
-      post: '',
+      post: "",
     },
   });
 
+  const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
+    await addCommentToPost(
+      postId,
+      values.post,
+      JSON.parse(currentUserId),
+      pathname
+    );
 
-    const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-        
-       await addCommentToPost(postId, values.post, JSON.parse(currentUserId), pathname)
-       form.reset()
-       
-    }
+    form.reset();
+  };
 
-
-    return (
+  return (
     <Form {...form}>
-         <form
-         onSubmit={form.handleSubmit(onSubmit)}
-        className='comment-form' 
-      >
-         
-         <FormField
+      <form className='comment-form' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
           control={form.control}
           name='post'
           render={({ field }) => (
             <FormItem className='flex w-full items-center gap-3'>
-              <FormLabel >
-               <Image
-               src={currentUserImg}
-               alt="Profile image"
-               width={48}
-               height={48}
-               className="rounded-full object-cover"
-               />
+              <FormLabel>
+                <Image
+                  src={currentUserImg}
+                  alt='current_user'
+                  width={48}
+                  height={48}
+                  className='rounded-full object-cover'
+                />
               </FormLabel>
-              <FormControl className="border-none bg-transparent">
+              <FormControl className='border-none bg-transparent'>
                 <Input
-                type="text"
-                placeholder="Comment..."               className="no-focus text-light-1 outline-none"
-                {...field}
+                  type='text'
+                  {...field}
+                  placeholder='Comment...'
+                  className='no-focus text-light-1 outline-none'
                 />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="comment-form_btn">
-            Reply
+        <Button type='submit' className='comment-form_btn'>
+          Reply
         </Button>
-        </form>
-        </Form>
-)
+      </form>
+    </Form>
+  );
 }
 
-export default Comment
+export default Comment;

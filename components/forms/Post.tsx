@@ -19,7 +19,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-
+import {useOrganization} from '@clerk/nextjs'
 
 
 import { PostValidation } from "@/lib/validations/post";
@@ -45,7 +45,7 @@ function Post({userId}: {userId: string}){
 
     const router = useRouter();
     const pathname = usePathname();
-
+    const {organization} = useOrganization()
 
   
 
@@ -59,10 +59,12 @@ function Post({userId}: {userId: string}){
 
 
     const onSubmit = async (values: z.infer<typeof PostValidation>) => {
+      // Testing: for console log the community
+      console.log('ORG ID: ', organization) 
        await createPost({
         text: values.post,
         author: userId,
-        communityId: null,
+        communityId: organization ? organization.id : null,
         path: pathname,
        })
        router.push("/")
