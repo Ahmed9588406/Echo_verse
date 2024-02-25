@@ -62,6 +62,7 @@ function Comment({ postId, currentUserImg, currentUserId }: Props) {
                   width={48}
                   height={48}
                   className='rounded-full object-cover'
+                  draggable={false}
                 />
               </FormLabel>
               <FormControl className='border-none bg-transparent'>

@@ -38,6 +38,7 @@ function DeletePost({
           router.push("/");
         }
       }}
+      draggable={false}
     />
   );
 }

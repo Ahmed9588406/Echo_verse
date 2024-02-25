@@ -24,6 +24,7 @@ function CommunityCard({ id, name, username, imgUrl, bio, members }: Props) {
             alt='community_logo'
             fill
             className='rounded-full object-cover'
+            draggable={false}
           />
         </Link>
 
@@ -56,6 +57,7 @@ function CommunityCard({ id, name, username, imgUrl, bio, members }: Props) {
                 className={`${
                   index !== 0 && "-ml-2"
                 } rounded-full object-cover`}
+                draggable={false}
               />
             ))}
             {members.length > 3 && (

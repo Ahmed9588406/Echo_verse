@@ -10,9 +10,9 @@ async function Page() {
   const userInfo = await fetchUser(user.id)
   if(userInfo?.onboarded) redirect('/')
 
-  // Testing for the error that accured with me when the user log in
-  console.log('UserInfo, ', userInfo?.username)
-  console.log('User, ', user?.username)
+    // Testing for the error that accured with me when the user log in
+   // console.log('UserInfo, ', userInfo?.username)
+  //console.log('User, ', user?.username)
 
   const userData = {
     id: user.id,

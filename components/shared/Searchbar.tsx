@@ -35,6 +35,7 @@ function Searchbar({ routeType }: Props) {
         width={24}
         height={24}
         className='object-contain'
+        draggable={false}
       />
       <Input
         id='text'

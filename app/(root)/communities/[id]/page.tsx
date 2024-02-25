@@ -38,15 +38,17 @@ async function Page({ params }: { params: { id: string } }) {
                   alt={tab.label}
                   width={24}
                   height={24}
-                  className='object-contain'
+                  className='rounded-full object-contain'
+                  draggable={false}
                 />
                 <p className='max-sm:hidden'>{tab.label}</p>
-
+                {/*
                 {tab.label === "Posts" && (
                   <p className='ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2'>
                     {communityDetails.posts.length}
                   </p>
                 )}
+                */}
               </TabsTrigger>
             ))}
           </TabsList>

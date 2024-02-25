@@ -125,14 +125,14 @@ export async function deletePost(id: string, path: string): Promise<void> {
     // Extract the authorIds and communityIds to update User and Community models respectively
     const uniqueAuthorIds = new Set(
       [
-        ...descendantPosts.map((post) => post.author?._id?.toString()), // Use optional chaining to handle possible undefined values
+        ...descendantPosts.map((post) => post.author?._id?.toString()),
         mainPost.author?._id?.toString(),
       ].filter((id) => id !== undefined)
     );
 
     const uniqueCommunityIds = new Set(
       [
-        ...descendantPosts.map((post) => post.community?._id?.toString()), // Use optional chaining to handle possible undefined values
+        ...descendantPosts.map((post) => post.community?._id?.toString()),
         mainPost.community?._id?.toString(),
       ].filter((id) => id !== undefined)
     );
@@ -152,8 +152,10 @@ export async function deletePost(id: string, path: string): Promise<void> {
       { $pull: { Posts: { $in: descendantPostIds } } }
     );
 
+    // Revalidate path after updating User and Community models
     revalidatePath(path);
   } catch (error: any) {
+    // Include the original error message for better debugging
     throw new Error(`Failed to delete Post: ${error.message}`);
   }
 }

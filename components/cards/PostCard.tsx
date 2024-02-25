@@ -54,6 +54,7 @@ function PostCard({
                 alt='user_community_image'
                 fill
                 className='cursor-pointer rounded-full'
+                draggable={false}
               />
             </Link>
 
@@ -71,36 +72,46 @@ function PostCard({
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className='flex gap-3.5'>
+                {/*
                 <Image
                   src='/assets/heart-gray.svg'
                   alt='heart'
                   width={24}
                   height={24}
                   className='cursor-pointer object-contain'
+                  draggable={false}
                 />
+                */}
                 <Link href={`/post/${id}`}>
                   <Image
                     src='/assets/reply.svg'
-                    alt='heart'
+                    alt='reply'
                     width={24}
                     height={24}
                     className='cursor-pointer object-contain'
+                    draggable={false}
                   />
                 </Link>
+                <Link href='/create-post'>
                 <Image
                   src='/assets/repost.svg'
-                  alt='heart'
+                  alt='repost'
                   width={24}
                   height={24}
                   className='cursor-pointer object-contain'
+                  draggable={false}
                 />
+                </Link>
+                {/*
                 <Image
                   src='/assets/share.svg'
-                  alt='heart'
+                  alt='share'
                   width={24}
                   height={24}
                   className='cursor-pointer object-contain'
+                  draggable={false}
                 />
+              */}
               </div>
 
               {isComment && comments.length > 0 && (
@@ -133,6 +144,7 @@ function PostCard({
               width={24}
               height={24}
               className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
+              draggable={false}
             />
           ))}
 
@@ -160,6 +172,7 @@ function PostCard({
             width={14}
             height={14}
             className='ml-1 rounded-full object-cover'
+            draggable={false}
           />
         </Link>
       )}

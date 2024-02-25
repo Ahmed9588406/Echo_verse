@@ -21,6 +21,7 @@ function Topbar(){
                                 alt="logout"
                                 width={24}
                                 height={24}
+                                draggable={false}
                                 />
                             </div>
                         </SignOutButton>

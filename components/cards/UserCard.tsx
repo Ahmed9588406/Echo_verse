@@ -27,6 +27,7 @@ function UserCard({ id, name, username, imgUrl, personType }: Props) {
             alt='user_logo'
             fill
             className='rounded-full object-cover'
+            draggable={false}
           />
         </div>
 
