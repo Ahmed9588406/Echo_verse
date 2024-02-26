@@ -27,6 +27,24 @@ interface Props {
   }[];
   isComment?: boolean;
 }
+// Function to replace URLs in content with Next.js Link components
+const renderContentWithLinks = (content: string): React.ReactNode[] => {
+  const regex = /(https?:\/\/[^\s]+)/g;
+  const parts = content.split(regex);
+  return parts.map((part, index) => {
+    if (part.match(regex)) {
+      return (
+        <Link legacyBehavior key={index} href={part} passHref>
+          <a target="_blank" rel="noopener noreferrer">
+            {part}
+          </a>
+        </Link>
+      );
+    }
+    return part;
+  });
+};
+
 
 function PostCard({
   id,
@@ -41,9 +59,8 @@ function PostCard({
 }: Props) {
   return (
     <article
-      className={`flex w-full flex-col rounded-xl ${
-        isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
-      }`}
+    className={`flex w-full flex-col rounded-xl ${isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"
+  }`}
     >
       <div className='flex items-start justify-between'>
         <div className='flex w-full flex-1 flex-row gap-4'>
@@ -68,7 +85,7 @@ function PostCard({
               </h4>
             </Link>
 
-            <p className='mt-2 text-small-regular text-light-2'>{content}</p>
+            <p className='mt-2 text-small-regular text-light-2'>{renderContentWithLinks(content)}</p>
 
             <div className={`${isComment && "mb-10"} mt-5 flex flex-col gap-3`}>
               <div className='flex gap-3.5'>
@@ -137,15 +154,19 @@ function PostCard({
       {!isComment && comments.length > 0 && (
         <div className='ml-1 mt-3 flex items-center gap-2'>
           {comments.slice(0, 2).map((comment, index) => (
+            <div
+            key={index}
+            className={`relative overflow-hidden rounded-full ${index !== 0 ? "-ml-5" : ""}`}
+            style={{ width: '24px', height: '24px' }}
+          >
             <Image
-              key={index}
               src={comment.author.image}
               alt={`user_${index}`}
-              width={24}
-              height={24}
-              className={`${index !== 0 && "-ml-5"} rounded-full object-cover`}
-              draggable={false}
+              layout='fill'
+              objectFit='cover'
+              className='rounded-full'
             />
+          </div>
           ))}
 
           <Link href={`/post/${id}`}>

@@ -1,7 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import ThreadCard from "@/components/cards/PostCard";
+import PostCard from "@/components/cards/PostCard";
 import Pagination from "@/components/shared/Pagination";
 
 import { fetchPosts } from "@/lib/actions/post.actions";
@@ -33,7 +33,7 @@ async function Home({
         ) : (
           <>
             {result.posts.map((post) => (
-              <ThreadCard
+              <PostCard
                 key={post._id}
                 id={post._id}
                 currentUserId={user.id}

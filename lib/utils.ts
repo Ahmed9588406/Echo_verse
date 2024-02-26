@@ -6,13 +6,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// created by chatgpt prompt : write a functoin that checks if an image is base64
+// functoin that checks if an image is base64
 export function isBase64Image(imageData: string) {
   const base64Regex = /^data:image\/(png|jpe?g|gif|webp);base64,/;
   return base64Regex.test(imageData);
 }
 
-// created by chatgpt
+/*
+ function takes a string representing a date, converts it to a Date object,
+ formats the date and time separately using toLocaleDateString and toLocaleTimeString methods,
+ and then combines them into a single string.
+ This function can be useful for displaying human-readable date and time information in a localized format
+*/
 export function formatDateString(dateString: string) {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -31,7 +36,13 @@ export function formatDateString(dateString: string) {
   return `${time} - ${formattedDate}`;
 }
 
-// created by chatgpt
+
+
+/*
+function takes a numeric count as input and returns a string indicating the count of posts in a human-readable format.
+It handles the special case where the count is zero,
+providing a custom message, and formats the count with the appropriate term ("Post" or "Posts") for counts greater than zero
+*/
 export function formatPostCount(count: number): string {
   if (count === 0) {
     return "No Posts";

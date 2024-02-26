@@ -8,24 +8,47 @@ import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
 
+/* 
+ This function creates a new community, associates it with a user, and updates both the community and user models in the database.
+ It includes error handling to manage potential issues during this process.
+
+*/
+
+/*
+This function is an asynchronous function (async) that takes six parameters: id, name, username, image, bio, and createdById. All parameters are of type string.
+The createdById parameter represents the ID of the user who is creating the community.
+*/ 
 export async function createCommunity(
   id: string,
   name: string,
   username: string,
   image: string,
   bio: string,
-  createdById: string // Change the parameter name to reflect it's an id
+  createdById: string 
 ) {
   try {
+    // function that establishes a connection to a database(mongo). This step is crucial before interacting with the database
     connectToDB();
 
     // Find the user with the provided unique id
+    /*
+    Uses await keyword to asynchronously query the User model (mongoose model) in the database to find a user with the provided id (createdById).
+    The result is stored in the user variable
+    */
     const user = await User.findOne({ id: createdById });
 
+    /* 
+    If no user is found with the provided id, an error is thrown with the message "User not found".
+    This is a basic error handling mechanism to ensure that the user exists before proceeding with creating a community
+    */
     if (!user) {
-      throw new Error("User not found"); // Handle the case if the user with the id is not found
+      throw new Error("User not found");
     }
 
+
+    
+    // New instance of the Community model is created with the provided parameters (id, name, username, image, bio) and the createdBy field is set to the _id of the user found in the previous step.
+    
     const newCommunity = new Community({
       id,
       name,
@@ -35,10 +58,12 @@ export async function createCommunity(
       createdBy: user._id, // Use the mongoose ID of the user
     });
 
+    // The newly created community is saved to the database using the save method. The result is stored in the createdCommunity variable
     const createdCommunity = await newCommunity.save();
 
-    // Update User model
+   // The _id of the newly created community is pushed to the communities array of the user,
     user.communities.push(createdCommunity._id);
+   // and the user is saved to the database. This establishes a connection between the user and the community they created
     await user.save();
 
     return createdCommunity;
@@ -49,13 +74,33 @@ export async function createCommunity(
   }
 }
 
+
+/* 
+This function fetches details of a community based on the provided id from the database.
+ It populates the createdBy field with user details and the members field with an array of user details,
+ making it convenient to retrieve comprehensive information about a community and its members.
+ Error handling is included to manage potential issues during this process
+
+*/
+
 export async function fetchCommunityDetails(id: string) {
   try {
     connectToDB();
 
+    /*
+    Queries the Community model in the database to find a community with the specified id. The populate method is used to populate referenced documents.
+    
+    The createdBy field is populated with the user details from the User model.
+    
+    The result, including the populated details, is stored in the communityDetails variable
+    
+    */
+
+    // In this case, it populates the createdBy field with the details of the user who created the community and the members field with details of all members in the community.
     const communityDetails = await Community.findOne({ id }).populate([
       "createdBy",
       {
+        // The members field is populated with an array of user details from the User model. The select option is used to specify which fields should be included in the populated results.
         path: "members",
         model: User,
         select: "name username image _id id",
@@ -69,6 +114,8 @@ export async function fetchCommunityDetails(id: string) {
     throw error;
   }
 }
+
+
 
 export async function fetchCommunityPosts(id: string) {
   try {
