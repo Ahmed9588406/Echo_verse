@@ -62,8 +62,8 @@ function Comment({ postId, currentUserImg, currentUserId }: Props) {
                 <Image
                   src={currentUserImg}
                   alt='current_user'
-                  width={48}
-                  height={48}
+                  layout="fill"
+                  objectFit="cover"
                   className='rounded-full'
                   draggable={false}
                 />
