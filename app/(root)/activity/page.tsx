@@ -27,14 +27,18 @@ async function Page() {
                     {activity?.map((activity) =>(
                         <Link key={activity._id} href={`/post/${activity.parentId}`}>
                             <article className="activity-card">
+                                <div className="relative overflow-hidden rounded-full"
+                                style={{ width: '20px', height: '20px' }}
+                                >
                                 <Image
                                   src={activity.author.image}
                                   alt="Profile Picture"
-                                  width={20}
-                                  height={20}
-                                  className="rounded-full object-cover"
+                                  layout="fill"
+                                  objectFit="cover"
+                                  className="rounded-full"
                                   draggable={false}
                                 />
+                                </div>
                                 <p className="!text-small-regular text-light-1">
                                     <span className="mr-1 text-primary-500">
                                         {activity.author.name}
